@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<div class="main">
+    <p>Please enter the required details</p><br>
+    <form class="form-inline" method="POST" action="/result">
+            <div class="pure-g">
+                <div>
+                    Name: <input type="text" name="username">
+                </div><br>
+                <div>
+                    <label>Area: </label><input type="text" name="area">
+                    <label>pH: </label><input type="text" name="ph">
+                    <label>Soil Type: </label><input type="text" name="soil_type">
+                </div><br>
+                <div>
+                    <label>Nitrogen: </label><input type="text" name="nitrogen">
+                    <label>Phosphorus: </label><input type="text" name="phosphorus">
+                    <label>Potassium: </label><input type="text" name="potassium">
+                </div><br>
+                <div>
+                    <label>Crop Season: </label><input type="text" name="crop_season">
+                    <label>Current planted crop: </label><input type="text" name="current_planted_crop">
+                    <label>Current crop month: </label><input type="text" name="current_crop_month">
+                </div><br>
+                <div>
+                    <label>Predicted month: </label><input type="text" name="predict_month">
+                    <label>Is the predicted month, current?: </label><input type="text" name="isCurrent">
+                </div><br>
+                <div>
+                    <label>Latitude: </label><input type="text" name="lat">
+                    <label>Longitude: </label><input type="text" name="lng">
+                    <label>District: </label><input type="text" name="district">
+                    <label>State: </label><input type="text" name="state">
+                </div><br>
+    </div>
+        <button type="submit" value="Submit">Submit</button>
+    </form>
+</div>
+<br>
+<div class="main">
+    <h2>Response from Server</h2>
+    {% if name %}
+        <p>Welcome to my site {{ name }} </p>
+        <p>Area: {{area}}</p>
+        <p>Potassium: {{potassium}}</p>
+        <p>Nitrogen: {{nitrogen}}</p>
+        <p>Phosphorus: {{phosphorus}}</p>
+        <p>pH: {{ph}}</p>
+        <p>Crop Season: {{crop_season}}</p>
+        <p>Current planted crop: {{current_planted_crop}}</p>
+        <p>Current crop month: {{current_crop_month}}</p>
+        <p>Predicted month: {{predict_month}}</p>
+        <p>Is the predicted month, current?: {{isCurrent}}</p>
+        <p>Soil Type: {{soil_type}}</p>
+        <p>Latitude: {{lat}}</p>
+        <p>Longitude: {{lng}}</p>
+        <p>District: {{district}}</p>
+        <p>State: {{state}}</p>
+
+    {% endif %}
+</div>
+</body>
+</html>
