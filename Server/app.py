@@ -7,11 +7,13 @@ import requests
 import json
 import pickle
 import geopy
+from flask_cors import CORS
 from geopy.geocoders import Nominatim
 from Models.crop_class import *
 from Models.production_class import *
 import numpy as np
 app = Flask(__name__)
+CORS(app)
 
 scale_val = 0.1
 
@@ -168,7 +170,7 @@ def rootpage():
                             lng=lng,
                             district=district,
                             state=state)   
-app.run()
+# app.run()
 
                                                             ############
 
@@ -350,4 +352,4 @@ if __name__ == '__main__':
     max_area = pickle.load(f)
     f.close()
     
-    app.run()
+    app.run(debug=True)

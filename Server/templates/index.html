@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="">
 </head>
 
 <body>
 <div class="main">
     <p>Please enter the required details</p><br>
-    <form class="form-inline" method="POST" action="/result">
+    <form class="form-inline" method="POST">
             <div class="pure-g">
                 <div>
                     Name: <input type="text" name="username">
@@ -39,8 +39,10 @@
                     <label>State: </label><input type="text" name="state">
                 </div><br>
     </div>
-        <button type="submit" value="Submit">Submit</button>
+      
     </form>
+
+    <button type="submit" value="Submit" onclick="submit()">Submit</button>
 </div>
 <br>
 <div class="main">
@@ -65,5 +67,105 @@
 
     {% endif %}
 </div>
+
+
+
+<script type="text/javascript">
+
+
+    function isJSON(str) {
+        try {
+            return (JSON.parse(str) && !!str);
+        } catch (e) {
+            return false;
+        }
+    }
+    
+        function submit() {
+    
+            var name = document.getElementsByName("name");
+            var area = document.getElementsByName("area");
+            
+            var ph= document.getElementsByName("ph");
+            var soil_type = document.getElementsByName("soil_type");
+            
+            var nitrogen = document.getElementsByName("nitrogen");
+            var phosphorus = document.getElementsByName("phosphorus");
+            var potassium = document.getElementsByName("potassium");
+            var crop_season = document.getElementsByName("crop_season");
+
+            var current_planted_crop = document.getElementsByName("current_planted_crop");
+            var current_crop_month = document.getElementsByName("current_crop_month");
+            var predict_month = document.getElementsByName("predict_month");
+            var isCurrent = document.getElementsByName("isCurrent");
+            
+            var lat = document.getElementsByName("lat");
+            var lng= document.getElementsByName("lng");
+            var district = document.getElementsByName("district");
+            var state = document.getElementsByName("state");
+            
+
+    
+            
+            let url = "http://localhost:5000/predict";
+    
+        
+            // Json data should be written here change the static values with the input field values
+            // take the data from the input fileds and grab the values like name field listed below ("ph": ph.value) format must be same 
+            var data = JSON.stringify({ "name": name.value,
+                    "ph": 1.0,
+                    "nitrogen": 2.0,
+                    "phosphorous": 3.0,
+                    "potassium": 4.0,
+                    "area": 5.0,
+                    "predict_month": "JAN",
+                    "current_crop_month": "FEB",
+                    "current_planted_crop": "MAR",
+                    "crop_season": "Kharif",
+                    "soil_type": "Alluvial",
+                    "lat": "25.594095",
+                    "lng": "85.137566",
+                    "isCurrent": "False", // this filed should be a Radio type returning value with either True or False
+                    "district": "AURANGABAD",
+                    "state": "Bihar"
+        
+        });
+            
+            if(isJSON(data)){
+    
+           
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+    
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+    
+            xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.responseText);
+       
+
+                // xhr.responseText this is the json responce(result from the server) which have to be decoded and display the result as needed
+                alert(xhr.responseText);
+
+
+            }};
+           
+            xhr.send(data);
+
+
+
+            }
+
+        }
+    
+    </script>
+
+
+
+
+
+
+
 </body>
 </html>
