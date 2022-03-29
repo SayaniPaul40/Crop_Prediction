@@ -7,7 +7,7 @@ dictToSend = {
 'potassium':4.0,
 'area':5.0,
 'predict_month':'JAN',
-'current_crop_month':'FEB',
+#'current_crop_month':'FEB',
 'current_planted_crop':'MAR',
 'crop_season':'Kharif',
 'soil_type':'Alluvial',

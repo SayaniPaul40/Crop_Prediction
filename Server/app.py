@@ -13,7 +13,7 @@ from Models.crop_class import *
 from Models.production_class import *
 import numpy as np
 app = Flask(__name__)
-CORS(app)
+CORS(app)           # permission JS
 
 scale_val = 0.1
 
@@ -114,66 +114,8 @@ production_weight_path = 'Models\weights\production_weights.sav'
 
 @app.route('/', methods=['GET'])
 def index():
-    return "Default Route"
-
-
-                                                            ##########
-@app.route('/result', methods=['GET', 'POST'])
-def rootpage():
-    name=''
-    area =''
-    potassium=''
-    nitrogen=''
-    phosphorus=''
-    ph=''
-    crop_season=''
-    current_planted_crop=''
-    current_crop_month=''
-    predict_month=''
-    isCurrent=''
-    soil_type=''
-    lat=''
-    lng=''
-    district=''
-    state=''
-    if request.method == 'POST' and 'username' in request.form: 
-        name= request.form.get('username')
-        area= request.form.get('area')
-        potassium= request.form.get('potassium')
-        nitrogen= request.form.get('nitrogen')
-        phosphorus= request.form.get('phosphorus')
-        ph=request.form.get('ph')
-        crop_season=request.form.get('crop_season')
-        current_planted_crop=request.form.get('current_planted_crop')
-        current_crop_month=request.form.get('current_crop_month')
-        predict_month=request.form.get('predict_month')
-        isCurrent=request.form.get(' isCurrent')
-        soil_type=request.form.get('soil_type')
-        lat=request.form.get('lat')
-        lng=request.form.get('lng')
-        district=request.form.get('district')
-        state=request.form.get('state')
-    return render_template("index.html", 
-                            name=name, 
-                            area=area, 
-                            potassium=potassium, 
-                            nitrogen=nitrogen,
-                            phosphorus=phosphorus,
-                            ph=ph, 
-                            crop_season=crop_season, 
-                            current_planted_crop=current_planted_crop,
-                            current_crop_month=current_crop_month,
-                            predict_month=predict_month,
-                            isCurrent=isCurrent,
-                            soil_type=soil_type,
-                            lat=lat,
-                            lng=lng,
-                            district=district,
-                            state=state)   
-# app.run()
-
-                                                            ############
-
+#    return "Default Route"
+     return render_template("index.html")
 
 @app.route('/predict', methods=['POST'])
 def predict():

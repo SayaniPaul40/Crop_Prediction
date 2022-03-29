@@ -1,164 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Index</title>
     <link rel="stylesheet" type="text/css" href="">
 </head>
 
 <body>
-<div class="main">
-    <p>Please enter the required details</p><br>
-    <form class="form-inline" method="POST">
+    <div class="main">
+        <p>Please enter the required details</p><br>
+        <form class="form-inline" method="POST" action="/predict">
             <div class="pure-g">
+
                 <div>
-                    Name: <input type="text" name="username">
+                    <label>Area: </label><input type="text" id="area">
+                    <label>pH: </label><input type="text" id="ph">
+                    <label>Soil Type: </label><input type="text" id="soil_type">
                 </div><br>
                 <div>
-                    <label>Area: </label><input type="text" name="area">
-                    <label>pH: </label><input type="text" name="ph">
-                    <label>Soil Type: </label><input type="text" name="soil_type">
+                    <label>Nitrogen: </label><input type="text" id="nitrogen">
+                    <label>Phosphorus: </label><input type="text" id="phosphorus">
+                    <label>Potassium: </label><input type="text" id="potassium">
                 </div><br>
                 <div>
-                    <label>Nitrogen: </label><input type="text" name="nitrogen">
-                    <label>Phosphorus: </label><input type="text" name="phosphorus">
-                    <label>Potassium: </label><input type="text" name="potassium">
+                    <label>Crop Season: </label><input type="text" id="crop_season">
+                    <label>Current planted crop: </label><input type="text" id="current_planted_crop">
+                    <label>Current crop month: </label><input type="text" id="current_crop_month">
                 </div><br>
                 <div>
-                    <label>Crop Season: </label><input type="text" name="crop_season">
-                    <label>Current planted crop: </label><input type="text" name="current_planted_crop">
-                    <label>Current crop month: </label><input type="text" name="current_crop_month">
+                    <label>Predicted month: </label><input type="text" id="predict_month">
+                    <label>Is the predicted month, current?: </label><input type="text" id="isCurrent">
                 </div><br>
                 <div>
-                    <label>Predicted month: </label><input type="text" name="predict_month">
-                    <label>Is the predicted month, current?: </label><input type="text" name="isCurrent">
+                    <label>Latitude: </label><input type="text" id="lat">
+                    <label>Longitude: </label><input type="text" id="lng">
+                    <label>District: </label><input type="text" id="district">
+                    <label>State: </label><input type="text" id="state">
                 </div><br>
-                <div>
-                    <label>Latitude: </label><input type="text" name="lat">
-                    <label>Longitude: </label><input type="text" name="lng">
-                    <label>District: </label><input type="text" name="district">
-                    <label>State: </label><input type="text" name="state">
-                </div><br>
+            </div>
+
+        </form>
+
+        <button type="submit" value="Submit" onclick="submit()">Submit</button>
     </div>
-      
-    </form>
-
-    <button type="submit" value="Submit" onclick="submit()">Submit</button>
-</div>
-<br>
-<div class="main">
-    <h2>Response from Server</h2>
-    {% if name %}
-        <p>Welcome to my site {{ name }} </p>
-        <p>Area: {{area}}</p>
-        <p>Potassium: {{potassium}}</p>
-        <p>Nitrogen: {{nitrogen}}</p>
-        <p>Phosphorus: {{phosphorus}}</p>
-        <p>pH: {{ph}}</p>
-        <p>Crop Season: {{crop_season}}</p>
-        <p>Current planted crop: {{current_planted_crop}}</p>
-        <p>Current crop month: {{current_crop_month}}</p>
-        <p>Predicted month: {{predict_month}}</p>
-        <p>Is the predicted month, current?: {{isCurrent}}</p>
-        <p>Soil Type: {{soil_type}}</p>
-        <p>Latitude: {{lat}}</p>
-        <p>Longitude: {{lng}}</p>
-        <p>District: {{district}}</p>
-        <p>State: {{state}}</p>
-
-    {% endif %}
-</div>
+    <br>
 
 
 
-<script type="text/javascript">
 
-
-    function isJSON(str) {
-        try {
-            return (JSON.parse(str) && !!str);
-        } catch (e) {
-            return false;
+    <script type="text/javascript">
+        function isJSON(str) {
+            try {
+                return (JSON.parse(str) && !!str);
+            } catch (e) {
+                return false;
+            }
         }
-    }
-    
+
+
+
+
         function submit() {
-    
-            var name = document.getElementsByName("name");
-            var area = document.getElementsByName("area");
-            
-            var ph= document.getElementsByName("ph");
-            var soil_type = document.getElementsByName("soil_type");
-            
-            var nitrogen = document.getElementsByName("nitrogen");
-            var phosphorus = document.getElementsByName("phosphorus");
-            var potassium = document.getElementsByName("potassium");
-            var crop_season = document.getElementsByName("crop_season");
 
-            var current_planted_crop = document.getElementsByName("current_planted_crop");
-            var current_crop_month = document.getElementsByName("current_crop_month");
-            var predict_month = document.getElementsByName("predict_month");
-            var isCurrent = document.getElementsByName("isCurrent");
-            
-            var lat = document.getElementsByName("lat");
-            var lng= document.getElementsByName("lng");
-            var district = document.getElementsByName("district");
-            var state = document.getElementsByName("state");
-            
+            //            var name = document.getElementsByName("name");
+            var area = document.getElementById("area").value;
 
-    
-            
+            var ph = document.getElementById("ph").value;
+            var soil_type = document.getElementById("soil_type").value;
+
+            var nitrogen = document.getElementById("nitrogen").value;
+            var phosphorus = document.getElementById("phosphorus").value;
+            var potassium = document.getElementById("potassium").value;
+            var crop_season = document.getElementById("crop_season").value;
+
+            var current_planted_crop = document.getElementById("current_planted_crop").value;
+            var current_crop_month = document.getElementById("current_crop_month").value;
+            var predict_month = document.getElementById("predict_month").value;
+            var isCurrent = document.getElementById("isCurrent").value;
+
+            var lat = document.getElementById("lat").value;
+            var lng = document.getElementById("lng").value;
+            var district = document.getElementById("district").value;
+            var state = document.getElementById("state").value;
+
+
+
             let url = "http://localhost:5000/predict";
-    
-        
+
+
             // Json data should be written here change the static values with the input field values
             // take the data from the input fileds and grab the values like name field listed below ("ph": ph.value) format must be same 
-            var data = JSON.stringify({ "name": name.value,
-                    "ph": 1.0,
-                    "nitrogen": 2.0,
-                    "phosphorous": 3.0,
-                    "potassium": 4.0,
-                    "area": 5.0,
-                    "predict_month": "JAN",
-                    "current_crop_month": "FEB",
-                    "current_planted_crop": "MAR",
-                    "crop_season": "Kharif",
-                    "soil_type": "Alluvial",
-                    "lat": "25.594095",
-                    "lng": "85.137566",
-                    "isCurrent": "False", // this filed should be a Radio type returning value with either True or False
-                    "district": "AURANGABAD",
-                    "state": "Bihar"
-        
-        });
-            
-            if(isJSON(data)){
-    
-           
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", url);
-    
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
-    
-            xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                console.log(xhr.responseText);
-       
+            var data = JSON.stringify({
 
-                // xhr.responseText this is the json responce(result from the server) which have to be decoded and display the result as needed
-                alert(xhr.responseText);
+                "ph": parseInt(ph),
+                "nitrogen": parseInt(nitrogen),
+                "phosphorous": parseInt(phosphorus),
+                "potassium": parseInt(potassium),
+                "area": parseInt(area),
+                "predict_month": predict_month,
+                "current_crop_month": current_crop_month,
+                "current_planted_crop": current_planted_crop,
+                "crop_season": crop_season,
+                "soil_type": soil_type,
+                "lat": lat,
+                "lng": lng,
+                "is_current": isCurrent, // this filed should be a Radio type returning value with either True or False
+                "district": district,
+                "state": state
 
 
-            }};
-           
-            xhr.send(data);
+            });
+            //           alert(ph + ',' + nitrogen + ',' + phosphorus + ',' + potassium + ',' + area + ',' + predict_month + ',' + current_crop_month + ',' + current_planted_crop + ',' + crop_season + ',' + soil_type + ',' + lat + ',' + lng + ',' + isCurrent + ',' + district + ',' + state);
+
+            if (isJSON(data)) {
+
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", url);
+
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        console.log(xhr.responseText);
+
+
+                        // xhr.responseText this is the json responce(result from the server) which have to be decoded and display the result as needed
+                        alert(xhr.responseText);
+
+
+                    }
+                };
+
+                xhr.send(data);
 
 
 
             }
 
         }
-    
     </script>
 
 
@@ -168,4 +149,5 @@
 
 
 </body>
+
 </html>
