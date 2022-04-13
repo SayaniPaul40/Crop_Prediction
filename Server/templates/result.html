@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>{{title}}</title>
+    <link type="text/css" href="{{ url_for('static', filename='css/style3.css') }}" rel="stylesheet">
+
+
+</head>
+
+<style>
+    .mt-0 {
+        margin-top: 50 !important;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container py-2 mx-auto my-50 h-10 " style="margin: 5rem;">
+        <div class="row">
+            <div class="col-sm py-2 py-md-3">
+                <div class="card card-body" style="justify-content: center;">
+
+
+                    <div id="pricing-table" class="clear">
+                        {% for item in myprediction %}
+
+                
+                        <div class="plan">
+                            <h3>{{ myprediction[item][0]['crop']}}<span><img src="{{myprediction[item][0]['link']}}" alt=""  style="height: 100px; width:100px;border-radius: 50px ;overflow: hidden;"/></span></h3>
+                            <a class="signup" href="">Result</a>
+                            <ul>
+                                <li><b>Yield:</b>{{ myprediction[item][0]['yield_percent'] }}</li>
+                                <li><b>Production: </b>{{ myprediction[item][0]['production'] }}</li>
+                                <li><b>Price: </b>{{ myprediction[item][0]['price'] }}</li>
+
+                            </ul>
+                        </div>
+                        <div class="plan" id="most-popular">
+                            <h3>{{ myprediction[item][1]['crop'] }}<span><img src="{{myprediction[item][1]['link']}}" alt="" style="height: 100px; width:100px;border-radius: 50px ;overflow: hidden;"/></span></h3>
+                            <a class="signup" href="">Result</a>
+                            <ul>
+                                <li><b>Yield:</b>{{ myprediction[item][1]['yield_percent'] }}</li>
+                                <li><b>Production: </b>{{ myprediction[item][1]['production'] }}</li>
+                                <li><b>Price: </b>{{ myprediction[item][1]['price'] }}</li>
+
+                            </ul>
+                        </div>
+                        <div class="plan" id="most-popular1">
+                            <h3>{{ myprediction[item][2]['crop'] }}<span><img src="{{myprediction[item][2]['link']}}" alt="" style="height: 100px; width:100px;border-radius: 50px ;overflow: hidden;"/></span></h3>
+                            <a class="signup" href="">Result</a>
+                            <ul>
+                                <li><b>Yield:</b>{{ myprediction[item][2]['yield_percent'] }}</li>
+                                <li><b>Production: </b>{{ myprediction[item][2]['production'] }}</li>
+                                <li><b>Price: </b>{{ myprediction[item][2]['price'] }}</li>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

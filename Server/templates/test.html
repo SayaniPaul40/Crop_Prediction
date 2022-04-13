@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link type="text/css" href="{{ url_for('static', filename='css/style2.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        function initGeolocation() {
+            if (navigator.geolocation) {
+                // Call getCurrentPosition with success and failure callbacks
+                navigator.geolocation.getCurrentPosition(success, fail);
+            } else {
+                alert("Sorry, your browser does not support geolocation services.");
+            }
+        }
+
+        function success(position) {
+            document.getElementById('lng').value = position.coords.longitude;
+            document.getElementById('lat').value = position.coords.latitude;
+            fetchLocInfo(position.coords.latitude, position.coords.longitude)
+        }
+
+        function fail() {
+            // Could not obtain location
+            alert("Sorry, your browser does not support geolocation services.");
+        }
+
+        function fetchLocInfo(lng, lat) {
+
+            console.log(lat);
+            let url = `http://api.positionstack.com/v1/reverse?access_key=b2075a5aae7ed4196387f80a1638be66&query=${lng},${lat}&limit=1`; // api call from 
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.send();
+
+            xhr.onload = () => {
+
+                console.log(xhr);
+                if (xhr.status === 200) {
+                    data = JSON.parse(xhr.response)
+                    document.getElementById('state').value = data["data"][0].region;
+                    document.getElementById('district').value = data["data"][0].county.toUpperCase();
+
+
+                } else {
+                    console.log(`error ${xhr.status} ${xhr.statusText}`)
+                }
+            }
+
+
+
+        }
+
+        function isJSON(str) {
+            try {
+                return (JSON.parse(str) && !!str);
+            } catch (e) {
+                return false;
+            }
+        }
+
+
+        function submit() {
+            var area = document.getElementById("area");
+            var soil_type = document.getElementById("soil_type");
+            var ph = document.getElementById("ph");
+
+            var nitrogen = document.getElementById("nitrogen");
+            var phosphorus = document.getElementById("phosphorus");
+            var potassium = document.getElementById("potassium");
+
+            var crop_season = document.getElementById("crop_season");
+            var current_planted_crop = document.getElementById("current_planted_crop");
+            var isCurrent = document.getElementById("isCurrent");
+
+            var lat = document.getElementById("lat");
+            var lng = document.getElementById("lng");
+            var district = document.getElementById("district");
+            var state = document.getElementById("state");
+
+            let url = "http://127.0.0.1:5000/predict";
+
+            // Json data should be written here, change the static values with the input field values, take the data from the input fileds and 
+            // grab the values like name field listed below ("ph": ph.value) format must be same 
+
+            var data = JSON.stringify({
+                "area": area.value,
+                "soil_type": soil_type.value,
+                "ph": ph.value,
+                "nitrogen": nitrogen.value,
+                "phosphorus": phosphorus.value,
+                "potassium": potassium.value,
+                "crop_season": crop_season.value,
+                "predict_month": predict_month.value,
+                "lat": lat.value,
+                "lng": lng.value,
+                "isCurrent": isCurrent.value, //returning value with either True or False
+                "district": district.value,
+                "state": state.value
+            });
+
+            if (isJSON(data)) {
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", url);
+                $('#spinner').show();
+                $('#submit_button').hide();
+
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+
+                        // xhr.responseText this is the json response (result from the server) which have to be decoded and display the result as needed
+                        var wind = window.open("", "popupWindow", "width=600,height=600,scrollbars=yes");
+                        wind.document.write(xhr.responseText);
+                        $('#spinner').hide();
+                        $('#submit_button').show();
+
+                    }
+                };
+
+                //xhr.open("POST", "result.html", true);
+                xhr.send(data);
+            }
+        }
+    </script>
+
+
+    <!--<link type="text/css" href="style2.css" rel="stylesheet"> -->
+</head>
+
+<body onload="initGeolocation()">
+
+
+    <center>
+        <div class="input-container">
+            <h3>Details to predict the Crops</h3>
+        
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        <p>Area (in acres): </p>
+                        <input type="text" id="area" name="area" required autocomplete="off">
+                    </td>
+
+                     <td>
+                        <p>Predict for month:</p>
+                    
+                    <input type="text" id="predict_month" name="predict_month" required autocomplete="off"></td>
+                    
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <p>Soil type: </p>
+                        <select id="soil_type" name="soil_type" required autocomplete="off">
+                            <option value="hide">-- Soil type --</option>
+                            <option value="Alluvial">Alluvial</option>
+                            <option value="Black">Black</option>
+                            <option value="Loam">Loam</option>
+                            <option value="Red">Red</option>
+                            </select>
+                    </td>
+
+                    <td>
+                        <p>Is the month current? </p>
+                    
+                    <select name="isCurrent" id="isCurrent" required autocomplete="off">
+                            <option value="hide">-- Current month? --</option>
+                            <option value="True">True</option>
+                            <option value="False">False</option>
+                        </select></td>
+                
+    
+                  
+                </tr>
+                <!--<p style="display:inline;">Soil</p>
+                        <input type="text" placeholder="Soil type"id="soil_type" name="soil_type" required>-->
+                <tr>
+                    <td>
+                        <p>pH of Soil: </p>
+                        <input type="text" id="ph" name="ph" required autocomplete="off">
+                    </td>
+
+
+                    <td>
+                        <p>State: </p>
+                    
+                    <input type="text" id="state" name="state" required autocomplete="off"></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <p>Nitrogen: </p>
+                    <input type="text" id="nitrogen" name="nitrogen" required autocomplete="off"></td>
+
+                    <td>
+                        <p>District: </p>
+                    
+                    <input type="text" id="district" name="district" required autocomplete="off"></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <p>Phosphorus: </p>
+                        <input type="text" id="phosphorus" name="phosphorus" required autocomplete="off">
+                    </td>
+
+                    <td>
+                        <p>Latitude: </p>
+                    
+                    <input type="text" id="lat" name="lat" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Potassium: </p>
+                        <input type="text" id="potassium" name="potassium" required autocomplete="off"></td>
+
+                        <td>
+                            <p>Longitude: </p>
+                        
+                       <input type="text" id="lng" name="lng" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Crop Season: </p>
+                    
+                    <!--<td><input type="text" placeholder="Crop Season (Kharif/ Rabi/ Zaid)" id="crop_season" name="crop_season" required></td>-->
+                    <select id="crop_season" name="crop_season" required autocomplete="off">
+                            <option value="hide">-- Crop Season --</option>
+                            <option value="Kharif">Kharif</option>
+                            <option value="Rabi">Rabi</option>
+                            <option value="Zaid">Zaid</option>
+                        </select></td>
+
+                </tr>
+                <!-- <tr>
+                    <td>
+                        <p>Current planted crop: </p>
+                    </td>
+                    <td><input type="text" id="current_planted_crop" name="current_planted_crop" required autocomplete="off"></td>
+                </tr>
+                <tr> -->
+                   
+            
+                <tr>
+                   
+                </tr>
+                <tr>
+                    
+                </tr>
+            </table>
+            <br>
+     
+            <div >
+
+                <button id="submit_button" type="button" onClick="submit()">Predict</button>
+                <div id="spinner" style="display: none;">
+
+                    <img src="../../static/img/loading.gif" alt="" height="70" width="70" >
+            </div>
+          
+            </button>
+           
+        </div>
+    </center>
+</body>
+
+</html>

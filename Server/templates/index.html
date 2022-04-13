@@ -1,153 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'home.html' %}
 
-<head>
-    <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="">
-</head>
+{% block body %}
+<!-- banner -->
+<section class="banner_w3lspvt" id="home">
+	<div class="csslider infinity" id="slider1">
+	
+				<div class="banner-top">
+					<div class="overlay">
+						<div class="container">
+							<div class="w3layouts-banner-info text-center">
+								<h3 class="text-wh">Multiobjective optimization of Agriculture</h3>
+								<h4 class="text-wh mx-auto my-4"><b>A crop prediction system</b></h4>
+								<br>
+								<h4 class="text-wh mx-auto my-4"><strong> Information about</strong></h4>
+								<p class="text-li mx-auto mt-2">
+									1. What crops will be best produced here? <br>
+									2. Yield % ? <br>
+									3. Production? <br>
+									4. Price?<br>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+	</div>
+</section>
 
-<body>
-    <div class="main">
-        <p>Please enter the required details</p><br>
-        <form class="form-inline" method="POST" action="/predict">
-            <div class="pure-g">
+<!-- core values -->
+<section class="core-value py-5" id="about">
+	<div class="container py-md-4">
+		<h3 class="heading mb-sm-5 mb-4 text-center"> About Us</h3>
+		<div class="row core-grids">
+			<div class="col-lg-6 core-left">
+				<img src="{{ url_for('static', filename='img/bg15.jpg') }}" class="img-fluid" alt="" />
+			</div>
+			<div class="col-lg-6 core-right">
+				<h3 class="mt-4">Improving Agriculture and Cultivating Crops To Make Farmers Increase Profit.</h3>
+				<p class="mt-3">We use machine learning and deep learning technologies to help you guide and make decisions 
+					about selecting the crops to cultivated which is best suited for the respective conditions.
+					Along with that, the yield %, production and hence the prices of the predicted crops can be generated.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
 
-                <div>
-                    <label>Area: </label><input type="text" id="area">
-                    <label>pH: </label><input type="text" id="ph">
-                    <label>Soil Type: </label><input type="text" id="soil_type">
-                </div><br>
-                <div>
-                    <label>Nitrogen: </label><input type="text" id="nitrogen">
-                    <label>Phosphorus: </label><input type="text" id="phosphorus">
-                    <label>Potassium: </label><input type="text" id="potassium">
-                </div><br>
-                <div>
-                    <label>Crop Season: </label><input type="text" id="crop_season">
-                    <label>Current planted crop: </label><input type="text" id="current_planted_crop">
-                    <label>Current crop month: </label><input type="text" id="current_crop_month">
-                </div><br>
-                <div>
-                    <label>Predicted month: </label><input type="text" id="predict_month">
-                    <label>Is the predicted month, current?: </label><input type="text" id="isCurrent">
-                </div><br>
-                <div>
-                    <label>Latitude: </label><input type="text" id="lat">
-                    <label>Longitude: </label><input type="text" id="lng">
-                    <label>District: </label><input type="text" id="district">
-                    <label>State: </label><input type="text" id="state">
-                </div><br>
-            </div>
+<!-- Products & Services  -->
+<section class="blog py-5" id="service">
+	<div class="container py-md-5">
+		<h3 align="center" class="heading mb-sm-5 mb-4 text-center"> Our Services</h3>
+		<div align="center" class="row blog-grids">
+			
+			<div class="col-lg-4 col-md-6 blog-left mb-lg-0 mb-sm-5 pb-lg-0 pb-5">
+					<!--<div class="blog-info">
+						<h6>Crop</h6>
+						<p class="mt-2"> Recommendation about the type of crops to be cultivated which is best suited
+							for the respective conditions</p>
+					</div>-->
+			</div>
 
-        </form>
+			<div align="center" class="col-lg-4 col-md-6 blog-middle mb-lg-0 mb-sm-5 pb-lg-0 pb-md-5">
+				<img src="{{ url_for('static', filename='img/bg12.jpg') }}" class="img-fluid" alt="" />
+				<a href="{{ url_for('crop_input') }}">
+					<div class="blog-info">
+						<h4>Predict Crops</h4>
+						<p class="mt-2">Recommendation about the type of crops to be cultivated which is best suited
+							for the respective conditions</p>
+					</div>
+				</a>
+			</div>
+		
+			<div class="col-lg-4 col-md-6 blog-right mt-lg-0 mt-5 pt-lg-0 pt-md-5">
+					<!--<div class="blog-info">
+						<h6>Crop Disease</h6>
+						<p class="mt-2">Predicting the name and causes of crop disease and suggestions to cure it</p>
+					</div>-->
+			</div>
 
-        <button type="submit" value="Submit" onclick="submit()">Submit</button>
+		</div>
+	</div>
+</section>
+
+
+
+<!-- Creating custom grid and hover effect
+<section>
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="hovereffect">
+        <img class="img-responsive" src="images/s2.jpg" alt="">
+        <div class="overlay">
+           <h2>Hover effect 1</h2>
+           <a class="info" href="#">link here</a>
+        </div>
     </div>
-    <br>
+</div> -->
 
 
 
-
-    <script type="text/javascript">
-        function isJSON(str) {
-            try {
-                return (JSON.parse(str) && !!str);
-            } catch (e) {
-                return false;
-            }
-        }
-
-
-
-
-        function submit() {
-
-            //            var name = document.getElementsByName("name");
-            var area = document.getElementById("area").value;
-
-            var ph = document.getElementById("ph").value;
-            var soil_type = document.getElementById("soil_type").value;
-
-            var nitrogen = document.getElementById("nitrogen").value;
-            var phosphorus = document.getElementById("phosphorus").value;
-            var potassium = document.getElementById("potassium").value;
-            var crop_season = document.getElementById("crop_season").value;
-
-            var current_planted_crop = document.getElementById("current_planted_crop").value;
-            var current_crop_month = document.getElementById("current_crop_month").value;
-            var predict_month = document.getElementById("predict_month").value;
-            var isCurrent = document.getElementById("isCurrent").value;
-
-            var lat = document.getElementById("lat").value;
-            var lng = document.getElementById("lng").value;
-            var district = document.getElementById("district").value;
-            var state = document.getElementById("state").value;
-
-
-
-            let url = "http://localhost:5000/predict";
-
-
-            // Json data should be written here change the static values with the input field values
-            // take the data from the input fileds and grab the values like name field listed below ("ph": ph.value) format must be same 
-            var data = JSON.stringify({
-
-                "ph": parseInt(ph),
-                "nitrogen": parseInt(nitrogen),
-                "phosphorous": parseInt(phosphorus),
-                "potassium": parseInt(potassium),
-                "area": parseInt(area),
-                "predict_month": predict_month,
-                "current_crop_month": current_crop_month,
-                "current_planted_crop": current_planted_crop,
-                "crop_season": crop_season,
-                "soil_type": soil_type,
-                "lat": lat,
-                "lng": lng,
-                "is_current": isCurrent, // this filed should be a Radio type returning value with either True or False
-                "district": district,
-                "state": state
-
-
-            });
-            //           alert(ph + ',' + nitrogen + ',' + phosphorus + ',' + potassium + ',' + area + ',' + predict_month + ',' + current_crop_month + ',' + current_planted_crop + ',' + crop_season + ',' + soil_type + ',' + lat + ',' + lng + ',' + isCurrent + ',' + district + ',' + state);
-
-            if (isJSON(data)) {
-
-
-                let xhr = new XMLHttpRequest();
-                xhr.open("POST", url);
-
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        console.log(xhr.responseText);
-
-
-                        // xhr.responseText this is the json responce(result from the server) which have to be decoded and display the result as needed
-                        alert(xhr.responseText);
-
-
-                    }
-                };
-
-                xhr.send(data);
-
-
-
-            }
-
-        }
-    </script>
-
-
-
-
-
-
-
-</body>
-
-</html>
+{% endblock %}

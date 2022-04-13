@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Crop prediction system</title>
+        <!--<link type="text/css" href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">-->
+
+    </head>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+}
+
+body
+{
+    background-image: linear-gradient(rgba(169, 240, 155, 0.24), rgba(51, 102, 0, 0.6));
+    background-position: center;
+    background-size: cover;
+}
+
+.container
+{
+    width: 360px;
+    height: 470px;
+    margin:4% auto;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+h3{
+    text-align: center;
+    margin-bottom:20px;
+    color: #777;
+}
+
+.container form
+{
+    width: 280px;
+    position: absolute;
+    top: 70px;
+    left: 40px;
+    transition: 0.5s;
+}
+
+form input
+{
+    width: 100%;
+    padding: 10px 5px;
+    margin: 5px 0;
+    border: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+}
+::placeholder
+{
+    color: #777;
+}
+.btn-box
+{
+    width: 100%;
+    margin:18px auto;
+    text-align: center;
+}
+form button
+{
+    width: 110px;
+    height: 35px;
+    margin: 0 10px;
+    background: linear-gradient(to right, #006600, #00cc00);
+    border-radius: 30px;
+    border: 0;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+#Form2
+{
+    left: 450px;
+
+}
+
+#Form3
+{
+    left: 450px;
+
+}
+
+.step-row
+{
+    width: 360px;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -1px 5px -1px #000;
+    position: relative;
+}
+.step-col
+{
+    width: 120px;
+    text-align: center;
+    color: #333;
+    position: relative;
+}
+#progress
+{
+    position: absolute;
+    height: 100%;
+    width: 120px;
+    background: linear-gradient(to right, #006600, #00cc00);
+    transition: 1s;
+}
+#progress::after
+{
+    content: '';
+    height: 0;
+    width: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    position: absolute;
+    right: -20px;
+    top:0;
+    border-left: 20px solid #00cc00;
+}
+
+    </style>
+</head>
+<body  onLoad="initGeolocation()">
+        <div class="container">
+            <form id="Form1" method="POST" action="/predict">
+                <h3>Details to predict the Crops</h3>
+                <input type="text" placeholder="Area of land (in acres)" name="area" id="area" required>
+                <input type="text" placeholder="Soil type" name="soil_type" id="soil_type" required>
+                <input type="text" placeholder="pH of soil" name="ph" id="ph" required>
+                <input type="text" placeholder="Nitrogen" name="nitrogen" id="nitrogen" required>
+                <input type="text" placeholder="Phosphorus" name="phosphorus" id="phosphorus" required>
+                <input type="text" placeholder="Potassium" name="potassium" id="potassium" required>
+
+                <div class="btn-box">
+                    <button type="button" id="Next1">Next</button>
+                </div>
+            </form>
+
+            <form id="Form2" method="POST" action="/predict">
+                <br><h3>Details to predict the Crops</h3>
+                <br><input type="text" placeholder="Crop Season (Kharif/ Rabi/ Zaid)" name="crop_season" id="crop_season" required>
+                <input type="text" placeholder="Current planted crop" name="current_planted_crop" name="current_planted_crop" required>
+                <input type="text" placeholder="Month for which crops to be predicted" name="predict_month" id="predict_month" required>
+                <br><br><p style="color:#8c8c8c">Is the month to predict, current?<br><br></p>
+		<select name="isCurrent" id="isCurrent">
+    		<option value="True">True</option>
+  		<option value="False">False</option>
+		</select>
+		<!--<input type="text" placeholder="Is the month to predict, current? True or False" name="isCurrent" id="isCurrent" required>-->
+		<br><br><br>
+                <div class="btn-box">
+                    <button type="button" id="Back1">Back</button>
+                    <button type="button" id="Next2">Next</button>
+                </div>
+            </form>
+
+            <form id="Form3" method="POST" action="/predict">
+                <br><h3>Details to predict the Crops</h3>
+                <br><input type="text" placeholder="Latitude" name="lat" id="lat" required>
+                <input type="text" placeholder="Longitude" name="lng" id="lng" required>
+                <input type="text" placeholder="District" name="district" id="district" required>
+                <input type="text" placeholder="State" name="state" id="state" required>
+		<br><br><br>
+                <div class="btn-box">
+                    <button type="button" id="Back2">Back</button>
+                    <button type="submit" value="Submit" onclick="submit()" >Predict</button>
+                </div>
+            </form>
+
+            <div class="step-row">
+                <div id="progress"></div>
+                <div class="step-col"><small>Step 1</small></div>
+                <div class="step-col"><small>Step 2</small></div>
+                <div class="step-col"><small>Step 3</small></div>
+            </div>
+        </div>
+
+        <script>
+
+        var Form1=document.getElementById("Form1");
+        var Form2=document.getElementById("Form2");
+        var Form3=document.getElementById("Form3");
+
+        var Next1=document.getElementById("Next1");
+        var Next2=document.getElementById("Next2");
+        var Back1=document.getElementById("Back1");
+        var Back2=document.getElementById("Back2");
+
+        var progress=document.getElementById("progress");
+
+
+       // Getting the location from the system itself...............................................
+        function initGeolocation()
+        {
+            if( navigator.geolocation )
+            {
+            // Call getCurrentPosition with success and failure callbacks
+            navigator.geolocation.getCurrentPosition( success, fail );
+            }
+            else
+            {
+            alert("Sorry, your browser does not support geolocation services.");
+            }
+        }
+
+        function success(position)
+        {
+            document.getElementById('lng').value = position.coords.longitude;
+            document.getElementById('lat').value = position.coords.latitude
+        }
+
+        function fail()
+        {
+            // Could not obtain location
+            alert("Sorry, your browser does not support geolocation services.");
+        }
+
+        //..............................................................................................
+        // http://api.positionstack.com/v1/reverse?access_key=b2075a5aae7ed4196387f80a1638be66&query=23.5204443,87.3119227&limit=1
+        Next1.onclick= function()
+        {
+            Form1.style.left="-450px";
+            Form2.style.left="40px";
+            progress.style.width= "240px";
+        }
+        Back1.onclick= function()
+        {
+            Form1.style.left="40px";
+            Form2.style.left="450px";
+            progress.style.width= "120px";
+        }
+        Next2.onclick= function()
+        {
+            Form2.style.left="-450px";
+            Form3.style.left="40px";
+            progress.style.width= "360px";
+        }
+        Back2.onclick= function()
+        {
+            Form2.style.left="40px";
+            Form3.style.left="450px";
+            progress.style.width= "240px";
+        }
+
+        function isJSON(str) 
+        {
+                try 
+            {
+                    return (JSON.parse(str) && !!str);
+                } 
+            catch (e) 
+            {
+                    return false;
+                }
+            }
+
+        function submit() 
+        {
+                var area = document.getElementsById("area").value;
+                var soil_type = document.getElementsById("soil_type").value;
+                var ph = document.getElementsById("ph").value;
+                
+                var nitrogen = document.getElementById("nitrogen").value;
+                var phosphorus = document.getElementById("phosphorus").value;
+                var potassium = document.getElementById("potassium").value;
+                var crop_season = document.getElementById("crop_season").value;
+
+                var current_planted_crop = document.getElementById("current_planted_crop").value;
+                var current_crop_month = document.getElementById("current_crop_month").value;
+                var predict_month = document.getElementById("predict_month").value;
+                var isCurrent = document.getElementById("isCurrent").value;
+
+                var lat = document.getElementById("lat").value;
+                var lng = document.getElementById("lng").value;
+                var district = document.getElementById("district").value;
+                var state = document.getElementById("state").value;
+
+                let url = "http://localhost:5000/predict";
+
+
+            // Json data should be written here, change the static values with the input field values, take the data from the input fileds and 
+            // grab the values like name field listed below ("ph": ph.value) format must be same 
+                        
+                var data = JSON.stringify({
+                "area": parseInt(area),
+                "soil_type": soil_type,                
+                "ph": parseInt(ph),
+                "nitrogen": parseInt(nitrogen),
+                "phosphorous": parseInt(phosphorus),
+                "potassium": parseInt(potassium),
+                "crop_season": crop_season,
+                "current_planted_crop": current_planted_crop,
+                "predict_month": predict_month,               
+                "lat": lat,
+                "lng": lng,
+                "is_current": isCurrent, // this filed should be a Radio type returning value with either True or False
+                "district": district,
+                "state": state
+                });
+                
+                // alert(ph + ',' + nitrogen + ',' + phosphorus + ',' + potassium + ',' + area + ',' + predict_month + ',' + current_crop_month + ',' + current_planted_crop + ',' + crop_season + ',' + soil_type + ',' + lat + ',' + lng + ',' + isCurrent + ',' + district + ',' + state);
+                if (isJSON(data)) 
+                    {
+                        let xhr = new XMLHttpRequest();
+                        xhr.open("POST", url);
+
+                        xhr.setRequestHeader("Accept", "application/json");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+
+                        xhr.onreadystatechange = function() 
+                        {
+                        if (xhr.readyState === 4) 
+                            {
+                                console.log(xhr.responseText);
+                                // xhr.responseText this is the json responce(result from the server) which have to be decoded and display the result as needed         
+                                alert(xhr.responseText);
+                            }
+                        };
+                
+                //xhr.open("POST", "result.html", true);
+                        xhr.send(data);
+                    }
+        }
+
+       </script>
+</body>
+</html>
+
